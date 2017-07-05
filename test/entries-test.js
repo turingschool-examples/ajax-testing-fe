@@ -1,5 +1,6 @@
 var assert    = require('chai').assert;
 var webdriver = require('selenium-webdriver');
+var until = webdriver.until;
 var test      = require('selenium-webdriver/testing');
 
 test.describe('testing my simple blog', function() {
@@ -19,8 +20,8 @@ test.describe('testing my simple blog', function() {
 
   test.it("lists all the entries on load", function() {
     driver.get(`${host}`)
-    driver.findElement({id: "entries"})
-    .findElements({css: ".entry"})
+    driver.wait(until.elementLocated({css: "#entries .entry"}))
+    driver.findElements({css: "#entries .entry"})
     .then(function (entries) {
       assert.lengthOf(entries, 3);
     })
