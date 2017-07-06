@@ -2,10 +2,10 @@ var assert    = require('chai').assert;
 var webdriver = require('selenium-webdriver');
 var until = webdriver.until;
 var test      = require('selenium-webdriver/testing');
+var frontEndLocation = "http://localhost:8080"
 
 test.describe('testing my simple blog', function() {
   var driver;
-  var host = "http://localhost:8080"
   this.timeout(10000);
 
   test.beforeEach(function() {
@@ -19,7 +19,7 @@ test.describe('testing my simple blog', function() {
   })
 
   test.it("lists all the entries on load", function() {
-    driver.get(`${host}`)
+    driver.get(`${frontEndLocation}`)
     driver.wait(until.elementLocated({css: "#entries .entry"}))
     driver.findElements({css: "#entries .entry"})
     .then(function (entries) {
