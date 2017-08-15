@@ -23,7 +23,7 @@ test.describe('testing my simple blog', function() {
     driver.wait(until.elementLocated({css: "#entries .entry"}))
     driver.findElements({css: "#entries .entry"})
     .then(function (entries) {
-      assert.lengthOf(entries, 3);
+      assert.lengthOf(entries, 100);
     })
   })
 });
