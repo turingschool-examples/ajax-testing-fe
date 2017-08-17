@@ -12,6 +12,8 @@ test.describe('testing my simple blog', function() {
     driver = new webdriver.Builder()
       .forBrowser('chrome')
       .build();
+    driver.get(`${frontEndLocation}`);
+    driver.wait(until.elementLocated({css: "#entries .entry"}));
   });
 
   test.afterEach(function() {
@@ -19,11 +21,29 @@ test.describe('testing my simple blog', function() {
   });
 
   test.it("lists all the entries on load", function() {
-    driver.get(`${frontEndLocation}`);
-    driver.wait(until.elementLocated({css: "#entries .entry"}));
     driver.findElements({css: "#entries .entry"})
     .then(function (entries) {
       assert.lengthOf(entries, 100);
     });
+  });
+
+  test.it("posts an entry", function() {
+    driver.findElement({ id: "author-field" }).sendKeys("Lauren");
+    driver.findElement({ id: "body-field" }).sendKeys("Some text");
+    driver.findElement({ css: "input[type='submit']" }).click();
+    driver.wait(until.elementLocated({ css: "div[data-id='101']" }))
+    driver.findElements({css: "#entries .entry"})
+      .then(function (entries) {
+        assert.lengthOf(entries, 101);
+      });
+  });
+
+  test.it("deletes an entry", function() {
+    driver.findElement({ css: "div[data-id='100'] .delete" }).click()
+    driver.wait(until.elementLocated({ css: ".flash.delete" }))
+    driver.findElements({css: "#entries .entry"})
+      .then(function (entries) {
+        assert.lengthOf(entries, 99);
+      });
   });
 });
